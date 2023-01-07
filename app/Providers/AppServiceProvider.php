@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Contracts\DataServiceContract;
 use App\Contracts\UserServiceContract;
+use App\Services\LocalDataService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(UserServiceContract::class, UserService::class);
+        $this->app->bind(DataServiceContract::class, LocalDataService::class);
     }
 
     /**

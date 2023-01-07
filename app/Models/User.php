@@ -60,4 +60,9 @@ class User extends Authenticatable
 
         return ['email' => $email, 'password' => $password];
     }
+
+    public function data()
+    {
+        return $this->hasMany(Data::class);
+    }
 }
