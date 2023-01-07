@@ -29,5 +29,5 @@ interface UserServiceContract
      * @param string $email
      * @return bool
      */
-    public function forgotPassword(string $email): void;
+    public function passwordRecovery(string $email): void;
 }

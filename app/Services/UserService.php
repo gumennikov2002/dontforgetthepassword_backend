@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Contracts\UserServiceContract;
+use App\Mail\PasswordRecovery;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class UserService implements UserServiceContract
 {
@@ -35,7 +38,6 @@ class UserService implements UserServiceContract
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return null;
         }
-
         return $user->createToken($credentials['device_name'])->plainTextToken;
     }
 
@@ -46,8 +48,15 @@ class UserService implements UserServiceContract
      * @param string $email
      * @return void
      */
-    public function forgotPassword(string $email): void
+    public function passwordRecovery(string $email): void
     {
-        // TODO: Implement forgotPassword() method.
+        $user = User::where('email', $email)->first();
+        $newPassword = Str::random(6);
+
+        if (!$user) return;
+
+        $user->update(['password' => Hash::make($newPassword)]);
+
+        Mail::to($email)->send(new PasswordRecovery($email, $newPassword));
     }
 }

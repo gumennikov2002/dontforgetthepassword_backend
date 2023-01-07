@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +21,14 @@ use App\Http\Controllers\AuthController;
 //});
 
 Route::prefix('v1')->group(function() {
-    Route::post('registration', RegistrationController::class)->name('registration');
-    Route::post('login', AuthController::class)->name('login');
+    Route::post('registration', RegistrationController::class)
+        ->name('registration');
+
+    Route::post('login', AuthController::class)
+        ->name('login');
+
+    Route::post('user/forgot_password', [UsersController::class, 'forgotPassword'])
+        ->name('user.forgot_password');
 
     Route::middleware('auth:sanctum')->group(function() {
         //
